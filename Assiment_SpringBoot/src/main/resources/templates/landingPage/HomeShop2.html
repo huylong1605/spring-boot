@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home Shop</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        .container-fluid {
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #f8f9fa;
+            padding: 15px;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 15px;
+        }
+        .product-card {
+            margin-bottom: 20px;
+        }
+        .card-img-top {
+            width: 100%;
+            height: 300px; /* Chỉnh kích thước ảnh tại đây */
+            object-fit: cover; /* Giúp ảnh giữ tỷ lệ khi bị cắt */
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var alert = document.getElementById("success-alert");
+            if (alert) {
+                setTimeout(function() {
+                    alert.style.display = "none";
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        });
+
+        function addToCart(productName) {
+            // Placeholder function to handle adding product to cart
+            alert(productName + " added to cart!");
+        }
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="sidebar">
+        <div class="container mt-5">
+            <form action="/submit" method="post">
+                <div class="mb-3">
+                    <label for="category" class="form-label">Select Category</label>
+                    <select id="category" name="category" class="form-select">
+                        <option value="" selected>Select a category</option>
+                        <option th:each="categoryy : ${category}"
+                                th:value="${categoryy.categoryIdRequest}"
+                                th:text="${categoryy.categoryNameRequest}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Brand</a>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                    <span class="navbar-text">
+                        Welcome, <span th:text="${account.userName}">User</span>!
+                    </span>
+                    <div class="d-flex align-items-center">
+                        <a th:href="@{/auth/v1/logout}" class="btn btn-secondary me-2">Logout</a>
+                        <a class="nav-link position-relative d-flex align-items-center" href="CartList">
+                            <i class="bi bi-cart-fill" style="font-size: 1.5rem; margin-right: 5px;"></i>
+                            <!--<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                                  style="font-size: 0.75rem; padding: 0.3em 0.6em;">
+                                ${countCart}
+                            </span>-->
+                            Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="row mt-4">
+            <div class="col-12">
+                <h2>Product List</h2>
+                <div class="row">
+                    <div th:each="product : ${products}" class="col-md-4">
+                        <div class="card h-100 product-card">
+                            <!-- Product image -->
+                            <a th:href="@{'/Con/v2/product_detail/'+ ${product.productIdRequest}}">
+                                <img class="card-img-top" th:src="${product.imageRequest}" alt="product image" />
+                            </a>
+                            <!-- Product details -->
+                            <div class="card-body text-center">
+                                <h5 class="card-title" th:text="${product.productNameRequest}"></h5>
+                                <p class="card-text" th:text="${product.priceRequest}"></p>
+                            </div>
+                            <!-- Product actions -->
+                            <div class="card-footer text-center">
+                                <a class="btn btn-outline-dark" th:href="@{/productDetail(id=${product.productIdRequest})}" role="button">Add to cart</a>
+                                <a class="btn btn-outline-dark" th:href="@{/productDetail(id=${product.productIdRequest})}" role="button">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
