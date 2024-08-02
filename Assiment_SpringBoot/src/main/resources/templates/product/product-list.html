@@ -35,7 +35,8 @@
             <td th:text="${product.priceRequest}">Price</td>
             <td th:text="${product.quantityRequest}">Quantity</td>
             <!--<td th:text="${product.descriptionRequest}">Description</td>-->
-            <td><img th:src="${product.imageRequest}" alt="Product Image" width="100" height="100"/></td>
+            <td th:if ="!${#strings.startsWith(product.imageRequest, 'http://localhost:8080')}"><img th:src="${product.imageRequest}" alt="Product Image" width="100" height="100"/></td>
+            <td th:if ="${#strings.startsWith(product.imageRequest, 'http://localhost:8080')}"><img th:src="@{/api/v1/image/files/{filename}(filename=${product.imageRequest.replace('http://localhost:8080/files/','')})}" alt="Product Image" width="100" height="100"/></td>
             <td th:text="${product.categoryName}">Category</td>
             <td>
                 <a th:href="@{'/Con/v1/product_detail/'+ ${product.productIdRequest}}"

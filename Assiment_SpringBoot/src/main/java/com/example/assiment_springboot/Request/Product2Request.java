@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class Product2Request {
 
     private String description;
 
-    private String image;
+    private MultipartFile image;
 
     private Integer categoryId;
 }

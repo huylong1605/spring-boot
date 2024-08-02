@@ -6,13 +6,17 @@ import com.example.assiment_springboot.Repository.CategoryRepository;
 import com.example.assiment_springboot.Repository.ProductRepository;
 import com.example.assiment_springboot.Request.Product2Request;
 import com.example.assiment_springboot.Request.ProductRequest;
+import com.example.assiment_springboot.Service.ImageService;
 import com.example.assiment_springboot.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,12 +25,14 @@ public class ProductServiceImp implements ProductService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private CategoryRepository categoryRepository ;
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private ImageService imageService;
 
     @Override
     public List<ProductRequest> listProduct() {
 
-        return   productRepository.findAll().stream().map(product -> new ProductRequest(
+        return productRepository.findAll().stream().map(product -> new ProductRequest(
                 product.getProductId(),
                 product.getProductName(),
                 product.getPrice(),
@@ -44,22 +50,26 @@ public class ProductServiceImp implements ProductService {
         if (category == null) {
             throw new RuntimeException("Category not found");
         }
-       Product product = new Product();
-       product.setProductName(request.getProductName());
-       product.setPrice(request.getPrice());
-       product.setQuantity(request.getQuantity());
-       product.setDescription(request.getDescription());
-       product.setImage(request.getImage());
-       product.setCategory(category);
-       productRepository.save(product);
+
+        MultipartFile file = request.getImage();
+        String urlSaveFile = imageService.saveOneImage(file);
+
+        Product product = new Product();
+        product.setProductName(request.getProductName());
+        product.setPrice(request.getPrice());
+        product.setQuantity(request.getQuantity());
+        product.setDescription(request.getDescription());
+        product.setImage(urlSaveFile);
+
+        product.setCategory(category);
+        productRepository.save(product);
         return product;
     }
 
 
-
     @Override
     public Product detailProduct(Long id) {
-       Product product = productRepository.findById( id).orElseThrow();
+        Product product = productRepository.findById(id).orElseThrow();
         return product;
     }
 
@@ -75,7 +85,7 @@ public class ProductServiceImp implements ProductService {
         product.setPrice(request.getPrice());
         product.setQuantity(request.getQuantity());
         product.setDescription(request.getDescription());
-        product.setImage(request.getImage());
+//        product.setImage(request.getImage());
         product.setCategory(category);
 
         productRepository.save(product);
@@ -89,8 +99,6 @@ public class ProductServiceImp implements ProductService {
         productRepository.deleteById(id);
 
     }
-
-
 
 
 }

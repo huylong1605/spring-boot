@@ -13,19 +13,19 @@ import lombok.NoArgsConstructor;
 public class Product {
 
     @Id
-    @Column(name ="product_id")
+    @Column(name = "product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     private long productId;
-    @Column(name ="product_name")
-     private String productName;
-    @Column(name ="price")
-     private double price;
-    @Column(name ="quantity", nullable = false)
-     private int quantity;
-    @Column(name ="description")
-     private String description;
-    @Column(name ="image")
-     private String image;
+    private long productId;
+    @Column(name = "product_name")
+    private String productName;
+    @Column(name = "price")
+    private double price;
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "image")
+    private String image;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "category_id")

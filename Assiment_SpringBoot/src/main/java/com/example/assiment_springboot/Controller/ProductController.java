@@ -75,7 +75,7 @@ public class ProductController {
         product2Request.setPrice(product.getPrice());
         product2Request.setQuantity(product.getQuantity());
         product2Request.setDescription(product.getDescription());
-        product2Request.setImage(product.getImage());
+//        product2Request.setImage(product.getImage());
         product2Request.setCategoryId(product.getCategory().getCategoryId());
 
         model.addAttribute("products", product2Request);
